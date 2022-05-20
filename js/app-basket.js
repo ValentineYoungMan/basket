@@ -213,7 +213,6 @@ if (iconMenu) {
 const animItems = document.querySelectorAll('._anim-items');
 
 function animStart() {
-    console.log('fewgbfs')
     if (animItems.length > 0) {
         for (let i = 0; i < animItems.length; i++) {
             let animItem = animItems[i];
@@ -224,7 +223,6 @@ function animStart() {
 }
 
 function animEnd() {
-    console.log('p')
     if (animItems.length > 0) {
         for (let i = 0; i < animItems.length; i++) {
             let animItem = animItems[i];
