@@ -1,3 +1,8 @@
+
+"use strict";
+
+function DA(){
+
 function DynamicAdapt(type) {
 	this.type = type;
 }
@@ -152,6 +157,32 @@ DynamicAdapt.prototype.arraySort = function (arr) {
 const da = new DynamicAdapt("max");
 da.init();
 
+
+}
+
+DA();
+
+//Провірка підтримки webp, додавання класу webp або no-webp для HTML
+function isWebp() {
+    // Провірка підтримки webp
+    function testWebP(callback) {
+
+        let webP = new Image();
+        webP.onload = webP.onerror = function () {
+            callback(webP.height == 2);
+        };
+        webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+    }
+    // Додавання класу _webp або _no-webp для HTML
+    testWebP(function (support) {
+        let className = support === true ? 'webp' : 'no-webp';
+        document.documentElement.classList.add(className);
+    });
+}    
+
+
+isWebp();
+
 function ibg() {
 
     let ibg = document.querySelectorAll(".ibg");
@@ -163,6 +194,8 @@ function ibg() {
 }
 
 ibg();
+
+//----------------------------------------------
 
 //----------------------------------------------
 
@@ -213,6 +246,7 @@ if (iconMenu) {
 const animItems = document.querySelectorAll('._anim-items');
 
 function animStart() {
+    console.log('fewgbfs')
     if (animItems.length > 0) {
         for (let i = 0; i < animItems.length; i++) {
             let animItem = animItems[i];
@@ -223,6 +257,7 @@ function animStart() {
 }
 
 function animEnd() {
+    console.log('p')
     if (animItems.length > 0) {
         for (let i = 0; i < animItems.length; i++) {
             let animItem = animItems[i];
@@ -279,6 +314,22 @@ window.addEventListener('scroll', ()=>{
 })
 //------------------------------------
 
+let basketCount = document.querySelector('.header-basket-count>span');
+
+
+
+function plusNumberPurchases() {
+    let numberPurchases = 0;
+    stepperInput.forEach(item => {
+        numberPurchases += +item.value;
+    }) 
+    basketCount.innerHTML = numberPurchases;
+}
+
+
+
+//------------------------------------
+
 const stepperBtnUp = document.querySelectorAll('.plus');
 const stepperBtnDown = document.querySelectorAll('.minus');
 let stepperInput = document.querySelectorAll('.stepper-field-input');
@@ -301,6 +352,7 @@ stepperInput.forEach(el => {
 			self.value = 1;
 		}
         disabledButton (count, el)
+        plusNumberPurchases()
 	});
 
      // заборона вводити букви і символи
@@ -319,6 +371,7 @@ stepperInput.forEach(el => {
 		count = el.value;
 
         disabledButton (count, el)
+        plusNumberPurchases()
 	}); 
     el.addEventListener('blur', (e) => {
 		let self = e.currentTarget;
@@ -326,7 +379,7 @@ stepperInput.forEach(el => {
 		count = el.value;
 
 		disabledButton (count, el)
-
+        plusNumberPurchases()
 	});
 
     el.closest('.block1-stepper-border').querySelector('.plus').addEventListener('click', (e) => {
@@ -362,7 +415,6 @@ function disabledButton (count, el) {
 //------------------------------------
 
 let block1Item = document.querySelectorAll('.block1-item')
-
 let stepperButton = document.querySelectorAll('.stepper-button');
 let itemPrice = document.querySelector('block1-item-price span');
 
@@ -380,7 +432,8 @@ stepperButton.forEach(button => {
         let newTotalPrice = (thisDataPrice * thisInputValue).toFixed(2);
     
         thisTotalPriceContainer.innerHTML = newTotalPrice + ' ' + 'грн.';
-        createTotalPrice()
+        createTotalPrice();
+        plusNumberPurchases();
     })
 })
 
@@ -438,3 +491,28 @@ stepperFieldInput.forEach( input => {
         createTotalPrice()
     })
 })
+
+//------------------------------------------
+
+let block1ItemDelete = document.querySelectorAll('.block1-item-delete');
+let block1Items = document.querySelector('.block1-items');
+block1Item = [...block1Item];
+block1ItemPrices = [...block1ItemPrices];
+stepperInput = [...stepperInput];
+//let block1Item = document.querySelector('.block1-item');
+
+[...block1ItemDelete].forEach(item => {
+    item.addEventListener('click', (i)=>{
+
+        let deleteElement = block1Item.indexOf(item.closest('.block1-item'));
+        block1ItemPrices.splice(deleteElement, 1)
+        block1Item.splice(deleteElement, 1)
+        stepperInput.splice(deleteElement, 1)
+        
+        block1Items.removeChild(item.closest('.block1-item'));
+        
+        createTotalPrice();
+        plusNumberPurchases()
+    })
+})
+
